@@ -1,0 +1,724 @@
+{
+  "manifestVersion": "3.2",
+  "proxies": [
+    {
+      "address": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+      "txHash": "0x14017fbd7ae89c5d4c3cd2f3c3d3f8b0de38e9e168d797e39fe2388b89848313",
+      "kind": "uups"
+    },
+    {
+      "address": "0x3Aa5ebB10DC797CAC828524e59A333d0A371443c",
+      "txHash": "0xe5b0a64b0ef8befcf99d69a8c7843a336c7d7de7b085294bdeda4b3f925f4450",
+      "kind": "uups"
+    },
+    {
+      "address": "0xa82fF9aFd8f496c3d6ac40E2a0F282E47488CFc9",
+      "txHash": "0x9b87562816ac52b184fa753b08cd39bc9a8cf8cc20d97093605d462726bc1211",
+      "kind": "uups"
+    },
+    {
+      "address": "0x4c5859f0F772848b2D91F1D83E2Fe57935348029",
+      "txHash": "0x898d669794805a73234730ec6d43c8c35f54cf1364655d21e09b586c0aaca00a",
+      "kind": "uups"
+    },
+    {
+      "address": "0x922D6956C99E12DFeB3224DEA977D0939758A1Fe",
+      "txHash": "0x9873bbb2e6156a4a4e1191d41b5f31baaf6eed973897ab78da857990c214163a",
+      "kind": "uups"
+    },
+    {
+      "address": "0xf4B146FbA71F41E0592668ffbF264F1D186b2Ca8",
+      "txHash": "0x6f9b7e220b1a90083ffbcd93d341708668b8ea05b9e2f5d199872eaf9d78c637",
+      "kind": "uups"
+    },
+    {
+      "address": "0xf953b3A269d80e3eB0F2947630Da976B896A8C5b",
+      "txHash": "0xb640eacd6f429f458673c3e1a62b1f85580e2e4bcaabb95aa72e456376d54afd",
+      "kind": "uups"
+    },
+    {
+      "address": "0xc96304e3c037f81dA488ed9dEa1D8F2a48278a75",
+      "txHash": "0xbcb81f79cc469758e1c19ca274dc891c7de171a754501c8d897433651db4c0c6",
+      "kind": "uups"
+    },
+    {
+      "address": "0x1f10F3Ba7ACB61b2F50B9d6DdCf91a6f787C0E82",
+      "txHash": "0xec22c3457a67d8fac8c7c759c38a1c30546454ca232662c81a83c541fdabb69f",
+      "kind": "uups"
+    },
+    {
+      "address": "0x6F6f570F45833E249e27022648a26F4076F48f78",
+      "txHash": "0x7ad4d4c3e677a3fa6bb1b521e76cd24536450e1ad81f9367337e4ff0e6e1cea7",
+      "kind": "uups"
+    },
+    {
+      "address": "0x638A246F0Ec8883eF68280293FFE8Cfbabe61B44",
+      "txHash": "0xeeef871ce63263942ca55a10623dab800f5ed1f998f98bfa9231b035cad1db17",
+      "kind": "uups"
+    },
+    {
+      "address": "0xc582Bc0317dbb0908203541971a358c44b1F3766",
+      "txHash": "0xc843c843f38a8e4a64af93606b3643dca0e87711a00302838f2ccdb478273bc1",
+      "kind": "uups"
+    },
+    {
+      "address": "0x821f3361D454cc98b7555221A06Be563a7E2E0A6",
+      "txHash": "0x120af764133fe3fac0e8e777603e7ee476302b5d288fc2cf7643b8ecacf3c41a",
+      "kind": "uups"
+    },
+    {
+      "address": "0x54B8d8E2455946f2A5B8982283f2359812e815ce",
+      "txHash": "0xe1a9a7c066d02da5494137ec07c8f0514477948660d96921b46e1765d5432f35",
+      "kind": "uups"
+    },
+    {
+      "address": "0x3904b8f5b0F49cD206b7d5AABeE5D1F37eE15D8d",
+      "txHash": "0x1522191d046e20f4fe845b4797b5e6f7e3e9e0783fa017eaf35ffb209f00ac9e",
+      "kind": "uups"
+    },
+    {
+      "address": "0x7B4f352Cd40114f12e82fC675b5BA8C7582FC513",
+      "txHash": "0xd18429de21e1390fdb4bc2f4b88e533b17046f833dcd6f4ef4f4ea6f23b9d82d",
+      "kind": "uups"
+    },
+    {
+      "address": "0x8D81A3DCd17030cD5F23Ac7370e4Efb10D2b3cA4",
+      "txHash": "0x6fcde6a53c77dfbf9a60e1ba715c5879b521d5aecd5880f419857ac6fb471163",
+      "kind": "uups"
+    },
+    {
+      "address": "0x6A59CC73e334b018C9922793d96Df84B538E6fD5",
+      "txHash": "0x8cc51e249f745a3ee028c44c47c50a7a61d17dccfce0c5fdd363f30ac8e8f097",
+      "kind": "uups"
+    },
+    {
+      "address": "0x95775fD3Afb1F4072794CA4ddA27F2444BCf8Ac3",
+      "txHash": "0xd8d2c70d9471c11084477d1f45e5961f5c05fb101be8160593c550df0b6f6ef3",
+      "kind": "uups"
+    },
+    {
+      "address": "0xCBBe2A5c3A22BE749D5DDF24e9534f98951983e2",
+      "txHash": "0x06a7062346ae55dc43ab63cb94d1dbd77785fe9b63bdb9daf89006cb0f90c700",
+      "kind": "uups"
+    },
+    {
+      "address": "0x975Ab64F4901Af5f0C96636deA0b9de3419D0c2F",
+      "txHash": "0x658b79ae2e27899cf72329f418aadd835fb1de1881200a5c01c15edb58c2d08c",
+      "kind": "uups"
+    },
+    {
+      "address": "0xB22C255250d74B0ADD1bfB936676D2a299BF48Bd",
+      "txHash": "0xef50552204e6fd127f79a8e51a37a8a7a980fe5fc4c4de33144b89aff1920061",
+      "kind": "uups"
+    },
+    {
+      "address": "0xA9e6Bfa2BF53dE88FEb19761D9b2eE2e821bF1Bf",
+      "txHash": "0xe638001d2247338bf343b5d0419d0248bfb67b9ddeb743849bbfc23093027cba",
+      "kind": "uups"
+    }
+  ],
+  "impls": {
+    "186bf49b495b069b525a4dda2408bbd34858ec968c48235d0a1a1a25dcfb66a2": {
+      "address": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
+      "txHash": "0x932c3d44365ac052be8249f28ce07170bb08d54f76e3cd446004ca6c7321f3b6",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:26"
+          },
+          {
+            "contract": "ERC1967UpgradeUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:214"
+          },
+          {
+            "contract": "UUPSUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:80"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:30"
+          },
+          {
+            "contract": "ERC165Upgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol:35"
+          },
+          {
+            "contract": "AccessControlUpgradeable",
+            "label": "_roles",
+            "type": "t_mapping(t_bytes32,t_struct(RoleData)43_storage)",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:63"
+          },
+          {
+            "contract": "AccessControlUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:219"
+          },
+          {
+            "contract": "PausableUpgradeable",
+            "label": "_paused",
+            "type": "t_bool",
+            "src": "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol:28"
+          },
+          {
+            "contract": "PausableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol:96"
+          },
+          {
+            "contract": "DatabrokerDeals",
+            "label": "_usdtToken",
+            "type": "t_contract(IERC20)2992",
+            "src": "contracts/DatabrokerDeals.sol:39"
+          },
+          {
+            "contract": "DatabrokerDeals",
+            "label": "_dtxToken",
+            "type": "t_contract(IERC20)2992",
+            "src": "contracts/DatabrokerDeals.sol:40"
+          },
+          {
+            "contract": "DatabrokerDeals",
+            "label": "_uniswap",
+            "type": "t_contract(IUniswapV2Router01)3347",
+            "src": "contracts/DatabrokerDeals.sol:41"
+          },
+          {
+            "contract": "DatabrokerDeals",
+            "label": "_dealIndex",
+            "type": "t_struct(Counter)1380_storage",
+            "src": "contracts/DatabrokerDeals.sol:42"
+          },
+          {
+            "contract": "DatabrokerDeals",
+            "label": "_pendingDeals",
+            "type": "t_struct(UintSet)2238_storage",
+            "src": "contracts/DatabrokerDeals.sol:43"
+          },
+          {
+            "contract": "DatabrokerDeals",
+            "label": "_uinswapDeadline",
+            "type": "t_uint128",
+            "src": "contracts/DatabrokerDeals.sol:45"
+          },
+          {
+            "contract": "DatabrokerDeals",
+            "label": "_slippagePercentage",
+            "type": "t_uint128",
+            "src": "contracts/DatabrokerDeals.sol:46"
+          },
+          {
+            "contract": "DatabrokerDeals",
+            "label": "_dtxStakingAddress",
+            "type": "t_address",
+            "src": "contracts/DatabrokerDeals.sol:47"
+          },
+          {
+            "contract": "DatabrokerDeals",
+            "label": "_payoutWalletAddress",
+            "type": "t_address",
+            "src": "contracts/DatabrokerDeals.sol:48"
+          },
+          {
+            "contract": "DatabrokerDeals",
+            "label": "_didToDealIndexes",
+            "type": "t_mapping(t_string_memory_ptr,t_array(t_uint256)dyn_storage)",
+            "src": "contracts/DatabrokerDeals.sol:52"
+          },
+          {
+            "contract": "DatabrokerDeals",
+            "label": "_userToDealIndexes",
+            "type": "t_mapping(t_address,t_array(t_uint256)dyn_storage)",
+            "src": "contracts/DatabrokerDeals.sol:53"
+          },
+          {
+            "contract": "DatabrokerDeals",
+            "label": "_dealIndexToDeal",
+            "type": "t_mapping(t_uint256,t_struct(Deal)3490_storage)",
+            "src": "contracts/DatabrokerDeals.sol:54"
+          }
+        ],
+        "types": {
+          "t_contract(IERC20)2992": {
+            "label": "contract IERC20"
+          },
+          "t_contract(IUniswapV2Router01)3347": {
+            "label": "contract IUniswapV2Router01"
+          },
+          "t_struct(Counter)1380_storage": {
+            "label": "struct CountersUpgradeable.Counter",
+            "members": [
+              {
+                "label": "_value",
+                "type": "t_uint256"
+              }
+            ]
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_struct(UintSet)2238_storage": {
+            "label": "struct EnumerableSetUpgradeable.UintSet",
+            "members": [
+              {
+                "label": "_inner",
+                "type": "t_struct(Set)1780_storage"
+              }
+            ]
+          },
+          "t_struct(Set)1780_storage": {
+            "label": "struct EnumerableSetUpgradeable.Set",
+            "members": [
+              {
+                "label": "_values",
+                "type": "t_array(t_bytes32)dyn_storage"
+              },
+              {
+                "label": "_indexes",
+                "type": "t_mapping(t_bytes32,t_uint256)"
+              }
+            ]
+          },
+          "t_array(t_bytes32)dyn_storage": {
+            "label": "bytes32[]"
+          },
+          "t_bytes32": {
+            "label": "bytes32"
+          },
+          "t_mapping(t_bytes32,t_uint256)": {
+            "label": "mapping(bytes32 => uint256)"
+          },
+          "t_uint128": {
+            "label": "uint128"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_mapping(t_string_memory_ptr,t_array(t_uint256)dyn_storage)": {
+            "label": "mapping(string => uint256[])"
+          },
+          "t_string_storage": {
+            "label": "string"
+          },
+          "t_array(t_uint256)dyn_storage": {
+            "label": "uint256[]"
+          },
+          "t_mapping(t_address,t_array(t_uint256)dyn_storage)": {
+            "label": "mapping(address => uint256[])"
+          },
+          "t_mapping(t_uint256,t_struct(Deal)3490_storage)": {
+            "label": "mapping(uint256 => struct DatabrokerDeals.Deal)"
+          },
+          "t_struct(Deal)3490_storage": {
+            "label": "struct DatabrokerDeals.Deal",
+            "members": [
+              {
+                "label": "did",
+                "type": "t_string_storage"
+              },
+              {
+                "label": "buyerId",
+                "type": "t_address"
+              },
+              {
+                "label": "sellerId",
+                "type": "t_address"
+              },
+              {
+                "label": "dataUrl",
+                "type": "t_bytes32"
+              },
+              {
+                "label": "dealIndex",
+                "type": "t_uint256"
+              },
+              {
+                "label": "amountInDTX",
+                "type": "t_uint256"
+              },
+              {
+                "label": "amountInUSDT",
+                "type": "t_uint256"
+              },
+              {
+                "label": "validFrom",
+                "type": "t_uint256"
+              },
+              {
+                "label": "validUntil",
+                "type": "t_uint256"
+              },
+              {
+                "label": "platformPercentage",
+                "type": "t_uint256"
+              },
+              {
+                "label": "stakingPercentage",
+                "type": "t_uint256"
+              },
+              {
+                "label": "platformAddress",
+                "type": "t_address"
+              },
+              {
+                "label": "accepted",
+                "type": "t_bool"
+              },
+              {
+                "label": "payoutCompleted",
+                "type": "t_bool"
+              }
+            ]
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_mapping(t_bytes32,t_struct(RoleData)43_storage)": {
+            "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)"
+          },
+          "t_struct(RoleData)43_storage": {
+            "label": "struct AccessControlUpgradeable.RoleData",
+            "members": [
+              {
+                "label": "members",
+                "type": "t_mapping(t_address,t_bool)"
+              },
+              {
+                "label": "adminRole",
+                "type": "t_bytes32"
+              }
+            ]
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          }
+        }
+      }
+    },
+    "8d593c0267d24b1cadf6f339d579234a9bf1b62e29a7204089ef19fabffd2d0f": {
+      "address": "0x4000F8820522AC96C4221b299876e3e53bCc8525",
+      "txHash": "0x4e06a04f3bc09cc5012a3f6bb4c0df30758841947ac998baa180fcd3631a3e41",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_bool",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:21"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:26"
+          },
+          {
+            "contract": "ERC1967UpgradeUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/ERC1967/ERC1967UpgradeUpgradeable.sol:214"
+          },
+          {
+            "contract": "UUPSUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol:80"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:30"
+          },
+          {
+            "contract": "ERC165Upgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol:35"
+          },
+          {
+            "contract": "AccessControlUpgradeable",
+            "label": "_roles",
+            "type": "t_mapping(t_bytes32,t_struct(RoleData)43_storage)",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:63"
+          },
+          {
+            "contract": "AccessControlUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:219"
+          },
+          {
+            "contract": "PausableUpgradeable",
+            "label": "_paused",
+            "type": "t_bool",
+            "src": "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol:28"
+          },
+          {
+            "contract": "PausableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol:96"
+          },
+          {
+            "contract": "DatabrokerDealsV2",
+            "label": "_usdtToken",
+            "type": "t_contract(IERC20)2992",
+            "src": "contracts/test/DatabrokerDealsV2.sol:39"
+          },
+          {
+            "contract": "DatabrokerDealsV2",
+            "label": "_dtxToken",
+            "type": "t_contract(IERC20)2992",
+            "src": "contracts/test/DatabrokerDealsV2.sol:40"
+          },
+          {
+            "contract": "DatabrokerDealsV2",
+            "label": "_uniswap",
+            "type": "t_contract(IUniswapV2Router01)3347",
+            "src": "contracts/test/DatabrokerDealsV2.sol:41"
+          },
+          {
+            "contract": "DatabrokerDealsV2",
+            "label": "_dealIndex",
+            "type": "t_struct(Counter)1380_storage",
+            "src": "contracts/test/DatabrokerDealsV2.sol:42"
+          },
+          {
+            "contract": "DatabrokerDealsV2",
+            "label": "_pendingDeals",
+            "type": "t_struct(UintSet)2238_storage",
+            "src": "contracts/test/DatabrokerDealsV2.sol:43"
+          },
+          {
+            "contract": "DatabrokerDealsV2",
+            "label": "_uinswapDeadline",
+            "type": "t_uint128",
+            "src": "contracts/test/DatabrokerDealsV2.sol:45"
+          },
+          {
+            "contract": "DatabrokerDealsV2",
+            "label": "_slippagePercentage",
+            "type": "t_uint128",
+            "src": "contracts/test/DatabrokerDealsV2.sol:46"
+          },
+          {
+            "contract": "DatabrokerDealsV2",
+            "label": "_dtxStakingAddress",
+            "type": "t_address",
+            "src": "contracts/test/DatabrokerDealsV2.sol:47"
+          },
+          {
+            "contract": "DatabrokerDealsV2",
+            "label": "_payoutWalletAddress",
+            "type": "t_address",
+            "src": "contracts/test/DatabrokerDealsV2.sol:48"
+          },
+          {
+            "contract": "DatabrokerDealsV2",
+            "label": "_didToDealIndexes",
+            "type": "t_mapping(t_string_memory_ptr,t_array(t_uint256)dyn_storage)",
+            "src": "contracts/test/DatabrokerDealsV2.sol:52"
+          },
+          {
+            "contract": "DatabrokerDealsV2",
+            "label": "_userToDealIndexes",
+            "type": "t_mapping(t_address,t_array(t_uint256)dyn_storage)",
+            "src": "contracts/test/DatabrokerDealsV2.sol:53"
+          },
+          {
+            "contract": "DatabrokerDealsV2",
+            "label": "_dealIndexToDeal",
+            "type": "t_mapping(t_uint256,t_struct(Deal)4793_storage)",
+            "src": "contracts/test/DatabrokerDealsV2.sol:54"
+          }
+        ],
+        "types": {
+          "t_contract(IERC20)2992": {
+            "label": "contract IERC20"
+          },
+          "t_contract(IUniswapV2Router01)3347": {
+            "label": "contract IUniswapV2Router01"
+          },
+          "t_struct(Counter)1380_storage": {
+            "label": "struct CountersUpgradeable.Counter",
+            "members": [
+              {
+                "label": "_value",
+                "type": "t_uint256"
+              }
+            ]
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_struct(UintSet)2238_storage": {
+            "label": "struct EnumerableSetUpgradeable.UintSet",
+            "members": [
+              {
+                "label": "_inner",
+                "type": "t_struct(Set)1780_storage"
+              }
+            ]
+          },
+          "t_struct(Set)1780_storage": {
+            "label": "struct EnumerableSetUpgradeable.Set",
+            "members": [
+              {
+                "label": "_values",
+                "type": "t_array(t_bytes32)dyn_storage"
+              },
+              {
+                "label": "_indexes",
+                "type": "t_mapping(t_bytes32,t_uint256)"
+              }
+            ]
+          },
+          "t_array(t_bytes32)dyn_storage": {
+            "label": "bytes32[]"
+          },
+          "t_bytes32": {
+            "label": "bytes32"
+          },
+          "t_mapping(t_bytes32,t_uint256)": {
+            "label": "mapping(bytes32 => uint256)"
+          },
+          "t_uint128": {
+            "label": "uint128"
+          },
+          "t_address": {
+            "label": "address"
+          },
+          "t_mapping(t_string_memory_ptr,t_array(t_uint256)dyn_storage)": {
+            "label": "mapping(string => uint256[])"
+          },
+          "t_string_storage": {
+            "label": "string"
+          },
+          "t_array(t_uint256)dyn_storage": {
+            "label": "uint256[]"
+          },
+          "t_mapping(t_address,t_array(t_uint256)dyn_storage)": {
+            "label": "mapping(address => uint256[])"
+          },
+          "t_mapping(t_uint256,t_struct(Deal)4793_storage)": {
+            "label": "mapping(uint256 => struct DatabrokerDealsV2.Deal)"
+          },
+          "t_struct(Deal)4793_storage": {
+            "label": "struct DatabrokerDealsV2.Deal",
+            "members": [
+              {
+                "label": "did",
+                "type": "t_string_storage"
+              },
+              {
+                "label": "buyerId",
+                "type": "t_address"
+              },
+              {
+                "label": "sellerId",
+                "type": "t_address"
+              },
+              {
+                "label": "dataUrl",
+                "type": "t_bytes32"
+              },
+              {
+                "label": "dealIndex",
+                "type": "t_uint256"
+              },
+              {
+                "label": "amountInDTX",
+                "type": "t_uint256"
+              },
+              {
+                "label": "amountInUSDT",
+                "type": "t_uint256"
+              },
+              {
+                "label": "validFrom",
+                "type": "t_uint256"
+              },
+              {
+                "label": "validUntil",
+                "type": "t_uint256"
+              },
+              {
+                "label": "platformPercentage",
+                "type": "t_uint256"
+              },
+              {
+                "label": "stakingPercentage",
+                "type": "t_uint256"
+              },
+              {
+                "label": "platformAddress",
+                "type": "t_address"
+              },
+              {
+                "label": "accepted",
+                "type": "t_bool"
+              },
+              {
+                "label": "payoutCompleted",
+                "type": "t_bool"
+              }
+            ]
+          },
+          "t_bool": {
+            "label": "bool"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_mapping(t_bytes32,t_struct(RoleData)43_storage)": {
+            "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)"
+          },
+          "t_struct(RoleData)43_storage": {
+            "label": "struct AccessControlUpgradeable.RoleData",
+            "members": [
+              {
+                "label": "members",
+                "type": "t_mapping(t_address,t_bool)"
+              },
+              {
+                "label": "adminRole",
+                "type": "t_bytes32"
+              }
+            ]
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          }
+        }
+      }
+    }
+  }
+}
