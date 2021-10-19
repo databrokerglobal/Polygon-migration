@@ -1,3 +1,13 @@
+// SPDX-License-Identifier: MIT
+/**
+ * Copyright (C) SettleMint NV - All Rights Reserved
+ *
+ * Use of this file is strictly prohibited without an active license agreement.
+ * Distribution of this file, via any medium, is strictly prohibited.
+ *
+ * For license inquiries, contact hello@settlemint.com
+ */
+
 pragma solidity ^0.8.6;
 
 import "@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol";
@@ -38,16 +48,16 @@ contract DatabrokerDeals is
 
   IERC20 private _usdtToken;
   IERC20 private _dtxToken;
-  IUniswapV2Router01 private _uniswap;
+  IUniswapV2Router02 private _uniswap;
   CountersUpgradeable.Counter private _dealIndex;
   EnumerableSetUpgradeable.UintSet private _pendingDeals;
 
-  uint128 private _uinswapDeadline;
+  uint128 private _uniswapDeadline;
   uint128 private _slippagePercentage;
   address private _dtxStakingAddress;
   address private _payoutWalletAddress;
-  bytes32 private constant OWNER_ROLE = keccak256("OWNER_ROLE");
-  bytes32 private constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
+  bytes32 private OWNER_ROLE;
+  bytes32 private ADMIN_ROLE;
 
   mapping(string => uint256[]) private _didToDealIndexes;
   mapping(address => uint256[]) private _userToDealIndexes;
@@ -99,18 +109,21 @@ contract DatabrokerDeals is
     address payoutWalletAddress,
     address dtxStakingAddress,
     address admin,
-    uint128 uinswapDeadline,
+    uint128 uniswapDeadline,
     uint128 slippagePercentage
   ) public initializer {
     AccessControlUpgradeable.__AccessControl_init();
     PausableUpgradeable.__Pausable_init();
 
+    OWNER_ROLE = keccak256("OWNER_ROLE");
+    ADMIN_ROLE = keccak256("ADMIN_ROLE");
+
     _usdtToken = IERC20(usdtToken);
     _dtxToken = IERC20(dtxToken);
-    _uniswap = IUniswapV2Router01(uniswap);
+    _uniswap = IUniswapV2Router02(uniswap);
     _payoutWalletAddress = payoutWalletAddress;
     _dtxStakingAddress = dtxStakingAddress;
-    _uinswapDeadline = uinswapDeadline;
+    _uniswapDeadline = uniswapDeadline;
     _slippagePercentage = slippagePercentage;
 
     _setupRole(OWNER_ROLE, msg.sender);
@@ -140,6 +153,11 @@ contract DatabrokerDeals is
     uint256 lockPeriod,
     address platformAddress
   ) public whenNotPaused hasAdminRole {
+    require(
+      platformAddress != address(0x0),
+      "DatabrokerDeals: Invalid platformAddress"
+    );
+
     address[] memory USDTToDTXPath = new address[](2);
     USDTToDTXPath[0] = address(_usdtToken);
     USDTToDTXPath[1] = address(_dtxToken);
@@ -149,7 +167,7 @@ contract DatabrokerDeals is
       amountOutMin,
       USDTToDTXPath,
       address(this),
-      block.timestamp + _uinswapDeadline
+      block.timestamp + _uniswapDeadline
     );
     uint256 dealIndex = _dealIndex.current();
 
@@ -217,13 +235,16 @@ contract DatabrokerDeals is
     uint256 sellerAmountOutMin = sellerAmounts[1] -
       ((sellerAmounts[1] * _slippagePercentage) / 10000);
 
+    _pendingDeals.remove(dealIndex);
+    deal.payoutCompleted = true;
+
     // Seller's USDT to payout wallet address
     _swapTokens(
       sellerAmountInDTX,
       sellerAmountOutMin,
       DTXToUSDTPath,
       _payoutWalletAddress,
-      block.timestamp + _uinswapDeadline
+      block.timestamp + _uniswapDeadline
     );
 
     require(
@@ -235,9 +256,6 @@ contract DatabrokerDeals is
       _dtxToken.transfer(deal.platformAddress, databrokerCommission),
       "DTX transfer failed for platformAddress"
     );
-
-    _pendingDeals.remove(dealIndex);
-    deal.payoutCompleted = true;
 
     emit Payout(
       dealIndex,
@@ -355,17 +373,17 @@ contract DatabrokerDeals is
       "DatabrokerDeals: Insufficient DTX balance of contract"
     );
 
+    deal.payoutCompleted = true;
+    _pendingDeals.remove(dealIndex);
+
     // Buyer's USDT to payout wallet address
     _swapTokens(
       amountsIn[0],
       buyerAmountOutMin,
       DTXToUSDTPath,
       _payoutWalletAddress,
-      block.timestamp + _uinswapDeadline
+      block.timestamp + _uniswapDeadline
     );
-
-    deal.payoutCompleted = true;
-    _pendingDeals.remove(dealIndex);
 
     emit SettleDeal(dealIndex, amountsIn[1]);
   }
@@ -430,7 +448,7 @@ contract DatabrokerDeals is
   }
 
   function updateUniswapDeadline(uint128 deadline) public hasAdminRole {
-    _uinswapDeadline = deadline;
+    _uniswapDeadline = deadline;
   }
 
   function updateSlippagePercentage(uint128 slippagePercentage)
@@ -441,7 +459,7 @@ contract DatabrokerDeals is
   }
 
   function getUniswapDeadline() public view returns (uint128) {
-    return _uinswapDeadline;
+    return _uniswapDeadline;
   }
 
   function getSlippagePercentage() public view returns (uint128) {

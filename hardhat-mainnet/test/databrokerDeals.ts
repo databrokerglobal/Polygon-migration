@@ -10,7 +10,7 @@ const { waffle } = hre;
 const { deployMockContract } = waffle;
 const IUniswap = require("../artifacts/@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol/IUniswapV2Router02.json");
 
-describe("Upgradability test", () => {
+describe("DatabrokerDeals.sol", () => {
   let deals: DatabrokerDeals;
   let usdt: USDT;
   let dtx: DTX;
@@ -852,5 +852,37 @@ describe("Upgradability test", () => {
     await expect(
       deals.connect(temp).updateSlippagePercentage(30)
     ).to.be.revertedWith("Caller is not an admin");
+  });
+
+  it("should revert if platform address is address(0) while creating a deal", async () => {
+    // Buyer pays the deal price in fiat
+    // Transak will convert fiat currency to USDT and deposit on DatabrokerDeals.sol address
+
+    // Mock the transfer deal amount of 1000 USDT to DatabrokerDeals.sol
+    await usdt.transfer(deals.address, ethers.utils.parseUnits("1000"));
+
+    // mock uniswap functions for `createDeal` and add swapped DTX fund
+    await mockUniswap.mock.swapExactTokensForTokens.returns([
+      ethers.utils.parseUnits("1000"),
+      ethers.utils.parseUnits("20000"),
+    ]);
+    await deals.burnUSDT(ethers.utils.parseUnits("1000"));
+    await dtx.transfer(deals.address, ethers.utils.parseUnits("20000"));
+
+    // Create a deal
+    await expect(
+      deals.createDeal(
+        "did:databroker:deal1:weatherdata",
+        await buyer.getAddress(),
+        await seller.getAddress(),
+        "0xf6a76b4e1400b4386a5a4eee9f4a6144bc982a9b84c70fd04cbf18aa80bcdb3e",
+        ethers.utils.parseUnits("1000"),
+        ethers.utils.parseUnits("20000"), // Min DTX from swap
+        20,
+        50,
+        1296000, // 15 days
+        "0x0000000000000000000000000000000000000000"
+      )
+    ).to.be.revertedWith("DatabrokerDeals: Invalid platformAddress");
   });
 });
