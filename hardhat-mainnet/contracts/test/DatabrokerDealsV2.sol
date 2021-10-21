@@ -13,9 +13,7 @@ pragma solidity ^0.8.6;
 import "@openzeppelin/contracts-upgradeable/utils/structs/EnumerableSetUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-// https://docs.openzeppelin.com/contracts/4.x/api/proxy#transparent-vs-uups
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
@@ -23,8 +21,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 contract DatabrokerDealsV2 is
   Initializable,
   UUPSUpgradeable,
-  AccessControlUpgradeable,
-  PausableUpgradeable
+  AccessControlUpgradeable
 {
   using EnumerableSetUpgradeable for EnumerableSetUpgradeable.UintSet;
   using CountersUpgradeable for CountersUpgradeable.Counter;
@@ -49,39 +46,27 @@ contract DatabrokerDealsV2 is
   IERC20 private _usdtToken;
   IERC20 private _dtxToken;
   IUniswapV2Router02 private _uniswap;
-  CountersUpgradeable.Counter private _dealIndex;
+  CountersUpgradeable.Counter public _dealIndex;
   EnumerableSetUpgradeable.UintSet private _pendingDeals;
 
-  uint128 private _uniswapDeadline;
-  uint128 private _slippagePercentage;
-  address private _dtxStakingAddress;
-  address private _payoutWalletAddress;
-  bytes32 private OWNER_ROLE;
+  uint128 public _uniswapDeadline;
+  uint128 public _slippagePercentage;
+  address public _dtxStakingAddress;
+  address public _payoutWalletAddress;
   bytes32 private ADMIN_ROLE;
 
-  mapping(string => uint256[]) private _didToDealIndexes;
-  mapping(address => uint256[]) private _userToDealIndexes;
+  mapping(string => uint256[]) public _didToDealIndexes;
+  mapping(address => uint256[]) public _userToDealIndexes;
   mapping(uint256 => Deal) private _dealIndexToDeal;
 
-  modifier isDealIndexValid(uint256 dealIndex) {
-    require(
-      dealIndex <= _dealIndex.current(),
-      "DatabrokerDeals: Invalid deal index"
-    );
-    _;
-  }
-  modifier hasOwnerRole() {
-    require(hasRole(OWNER_ROLE, msg.sender), "Caller is not an owner");
-    _;
-  }
   modifier hasAdminRole() {
-    require(hasRole(ADMIN_ROLE, msg.sender), "Caller is not an admin");
+    require(hasRole(ADMIN_ROLE, msg.sender), "OA"); // Only Admin
     _;
   }
   modifier isPendingDealsEmpty() {
     require(
       _pendingDeals.length() == 0,
-      "DatabrokerDeals: Payout is still pending for some deals"
+      "PP" // Payout is still pending for some deals
     );
     _;
   }
@@ -94,13 +79,6 @@ contract DatabrokerDealsV2 is
     uint256 platformCommission
   );
   event SettleDeal(uint256 dealIndex, uint256 buyerAmount);
-  event SwapTokens(
-    address fromToken,
-    address toToken,
-    uint256 amountIn,
-    uint256 amountOut,
-    address receiverAddress
-  );
 
   function initialize(
     address usdtToken,
@@ -113,9 +91,7 @@ contract DatabrokerDealsV2 is
     uint128 slippagePercentage
   ) public initializer {
     AccessControlUpgradeable.__AccessControl_init();
-    PausableUpgradeable.__Pausable_init();
 
-    OWNER_ROLE = keccak256("OWNER_ROLE");
     ADMIN_ROLE = keccak256("ADMIN_ROLE");
 
     _usdtToken = IERC20(usdtToken);
@@ -126,20 +102,11 @@ contract DatabrokerDealsV2 is
     _uniswapDeadline = uniswapDeadline;
     _slippagePercentage = slippagePercentage;
 
-    _setupRole(OWNER_ROLE, msg.sender);
     _setupRole(ADMIN_ROLE, msg.sender);
     _setupRole(ADMIN_ROLE, admin);
   }
 
   function _authorizeUpgrade(address) internal override hasAdminRole {}
-
-  function pauseContract() public hasAdminRole {
-    _pause();
-  }
-
-  function unPauseContract() public hasAdminRole {
-    _unpause();
-  }
 
   function createDealV2(
     string memory did,
@@ -152,12 +119,7 @@ contract DatabrokerDealsV2 is
     uint256 stakingPercentage,
     uint256 lockPeriod,
     address platformAddress
-  ) public whenNotPaused hasAdminRole {
-    require(
-      platformAddress != address(0x0),
-      "DatabrokerDeals: Invalid platformAddress"
-    );
-
+  ) public hasAdminRole {
     address[] memory USDTToDTXPath = new address[](2);
     USDTToDTXPath[0] = address(_usdtToken);
     USDTToDTXPath[1] = address(_dtxToken);
@@ -202,15 +164,15 @@ contract DatabrokerDealsV2 is
     _dealIndex.increment();
   }
 
-  function payout(uint256 dealIndex) public whenNotPaused hasAdminRole {
+  function payout(uint256 dealIndex) public hasAdminRole {
     Deal storage deal = _dealIndexToDeal[dealIndex];
 
-    require(!deal.payoutCompleted, "DatabrokerDeals: Payout already processed");
-    require(deal.accepted, "DatabrokerDeals: Deal was declined by buyer");
     require(
-      deal.validUntil <= block.timestamp,
-      "DatabrokerDeals: Deal is locked for payout"
-    );
+      !deal.payoutCompleted &&
+        deal.accepted &&
+        deal.validUntil <= block.timestamp,
+      "ID"
+    ); // Invalid deal
 
     address[] memory DTXToUSDTPath = new address[](2);
     DTXToUSDTPath[0] = address(_dtxToken);
@@ -220,12 +182,19 @@ contract DatabrokerDealsV2 is
       uint256 sellerAmountInDTX,
       uint256 databrokerCommission,
       uint256 stakingCommission
-    ) = calculateTransferAmount(dealIndex, DTXToUSDTPath);
+    ) = calculateTransferAmount(
+        dealIndex,
+        deal.amountInDTX,
+        deal.amountInUSDT,
+        deal.platformPercentage,
+        deal.stakingPercentage,
+        DTXToUSDTPath
+      );
 
     require(
       _dtxToken.balanceOf(address(this)) >=
         (sellerAmountInDTX + databrokerCommission + stakingCommission),
-      "DatabrokerDeals: Insufficient DTX balance of contract"
+      "IDTX" // Insufficient DTX balance of contract
     );
 
     uint256[] memory sellerAmounts = _uniswap.getAmountsOut(
@@ -248,13 +217,9 @@ contract DatabrokerDealsV2 is
     );
 
     require(
-      _dtxToken.transfer(_dtxStakingAddress, stakingCommission),
-      "DTX transfer failed for _dtxStakingAddress"
-    );
-
-    require(
-      _dtxToken.transfer(deal.platformAddress, databrokerCommission),
-      "DTX transfer failed for platformAddress"
+      _dtxToken.transfer(_dtxStakingAddress, stakingCommission) &&
+        _dtxToken.transfer(deal.platformAddress, databrokerCommission),
+      "TF" // DTX transfer failed
     );
 
     emit Payout(
@@ -267,26 +232,27 @@ contract DatabrokerDealsV2 is
 
   function calculateTransferAmount(
     uint256 dealIndex,
+    uint256 amountInDTX,
+    uint256 amountInUSDT,
+    uint256 platformPercentage,
+    uint256 stakingPercentage,
     address[] memory DTXToUSDTPath
   )
     public
     view
-    isDealIndexValid(dealIndex)
     returns (
       uint256,
       uint256,
       uint256
     )
   {
-    Deal memory deal = _dealIndexToDeal[dealIndex];
+    require(dealIndex <= _dealIndex.current(), "II"); // Invalid Index
 
-    uint256 platformShareInDTX = (deal.amountInDTX *
-      (deal.platformPercentage)) / (100);
-    uint256 sellerShareInDTX = deal.amountInDTX - platformShareInDTX;
+    uint256 platformShareInDTX = (amountInDTX * (platformPercentage)) / (100);
+    uint256 sellerShareInDTX = amountInDTX - platformShareInDTX;
 
-    uint256 platformShareInUSDT = (deal.amountInUSDT *
-      (deal.platformPercentage)) / (100);
-    uint256 sellerShareInUSDT = deal.amountInUSDT - platformShareInUSDT;
+    uint256 platformShareInUSDT = (amountInUSDT * (platformPercentage)) / (100);
+    uint256 sellerShareInUSDT = amountInUSDT - platformShareInUSDT;
 
     uint256[] memory sellerSwapAmounts = _uniswap.getAmountsIn(
       sellerShareInUSDT,
@@ -311,49 +277,36 @@ contract DatabrokerDealsV2 is
       platformCommission = platformShareInDTX + extraDTXToBeRemoved;
     }
 
-    uint256 stakingCommission = (platformCommission * deal.stakingPercentage) /
-      100;
+    uint256 stakingCommission = (platformCommission * stakingPercentage) / 100;
     uint256 databrokerCommission = platformCommission - stakingCommission;
 
     return (sellerTransferAmountInDTX, databrokerCommission, stakingCommission);
   }
 
-  function declineDeal(uint256 dealIndex) public whenNotPaused hasAdminRole {
+  function declineDeal(uint256 dealIndex) public hasAdminRole {
     Deal storage deal = _dealIndexToDeal[dealIndex];
 
-    require(deal.accepted, "DatabrokerDeals: Deal was already declined");
-    require(
-      deal.validUntil > block.timestamp,
-      "DatabrokerDeals: Time duration for declining the deal is over"
-    );
+    require(deal.accepted && deal.validUntil > block.timestamp, "ID");
 
     deal.accepted = false;
   }
 
-  function acceptDeal(uint256 dealIndex) public whenNotPaused hasAdminRole {
+  function acceptDeal(uint256 dealIndex) public hasAdminRole {
     Deal storage deal = _dealIndexToDeal[dealIndex];
 
-    require(!deal.accepted, "DatabrokerDeals: Deal was already accepted");
-    require(
-      deal.validUntil > block.timestamp,
-      "DatabrokerDeals: Time duration for accepting the deal is over"
-    );
+    require(!deal.accepted && deal.validUntil > block.timestamp, "ID");
 
     deal.accepted = true;
   }
 
-  function settleDeclinedDeal(uint256 dealIndex)
-    public
-    whenNotPaused
-    hasAdminRole
-  {
+  function settleDeclinedDeal(uint256 dealIndex) public hasAdminRole {
     Deal storage deal = _dealIndexToDeal[dealIndex];
 
-    require(!deal.payoutCompleted, "DatabrokerDeals: Payout already processed");
-    require(!deal.accepted, "DatabrokerDeals: Deal is not declined by buyer");
     require(
-      deal.validUntil <= block.timestamp,
-      "DatabrokerDeals: Deal is locked for payout"
+      !deal.payoutCompleted &&
+        !deal.accepted &&
+        deal.validUntil <= block.timestamp,
+      "ID" // Invalid deal
     );
 
     address[] memory DTXToUSDTPath = new address[](2);
@@ -370,7 +323,7 @@ contract DatabrokerDealsV2 is
 
     require(
       _dtxToken.balanceOf(address(this)) >= amountsIn[0],
-      "DatabrokerDeals: Insufficient DTX balance of contract"
+      "IDTX" // Insufficient DTX balance of contract
     );
 
     deal.payoutCompleted = true;
@@ -406,8 +359,6 @@ contract DatabrokerDealsV2 is
       deadline
     );
 
-    emit SwapTokens(path[0], path[1], amountIn, amounts[1], receiverAddress);
-
     return amounts[1];
   }
 
@@ -422,21 +373,17 @@ contract DatabrokerDealsV2 is
   function getDealIndexesForDid(string memory did)
     public
     view
-    returns (uint256[] memory dealIndexes)
+    returns (uint256[] memory dealIndexesForDid)
   {
-    dealIndexes = _didToDealIndexes[did];
+    dealIndexesForDid = _didToDealIndexes[did];
   }
 
   function getDealIndexesForUser(address user)
     public
     view
-    returns (uint256[] memory dealIndexes)
+    returns (uint256[] memory dealIndexesForUser)
   {
-    dealIndexes = _userToDealIndexes[user];
-  }
-
-  function getLatestDealIndex() public view returns (uint256) {
-    return _dealIndex.current() - 1;
+    dealIndexesForUser = _userToDealIndexes[user];
   }
 
   function updateDtxInstance(address newDTXAddress) public hasAdminRole {
@@ -447,33 +394,19 @@ contract DatabrokerDealsV2 is
     _usdtToken = IERC20(newUSDTAddress);
   }
 
-  function updateUniswapDeadline(uint128 deadline) public hasAdminRole {
-    _uniswapDeadline = deadline;
-  }
-
-  function updateSlippagePercentage(uint128 slippagePercentage)
+  function updateUniswapDetails(uint128 deadline, uint128 slippagePercentage)
     public
     hasAdminRole
   {
+    _uniswapDeadline = deadline;
     _slippagePercentage = slippagePercentage;
   }
 
-  function getUniswapDeadline() public view returns (uint128) {
-    return _uniswapDeadline;
-  }
-
-  function getSlippagePercentage() public view returns (uint128) {
-    return _slippagePercentage;
-  }
-
-  function withdrawAllUsdt() public hasOwnerRole isPendingDealsEmpty {
+  function withdrawAllTokens() public hasAdminRole isPendingDealsEmpty {
     _usdtToken.transfer(msg.sender, _usdtToken.balanceOf(address(this)));
-  }
-
-  function withdrawAllDtx() public hasOwnerRole isPendingDealsEmpty {
     require(
       _dtxToken.transfer(msg.sender, _dtxToken.balanceOf(address(this))),
-      "DTX transfer failed"
+      "DTF" // DTX transfer failed
     );
   }
 

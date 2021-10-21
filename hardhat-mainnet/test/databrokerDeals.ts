@@ -14,6 +14,7 @@ describe("DatabrokerDeals.sol", () => {
   let deals: DatabrokerDeals;
   let usdt: USDT;
   let dtx: DTX;
+  let calculation: any;
   let mockUniswap: any;
   let owner: Signer;
   let admin: Signer;
@@ -388,26 +389,20 @@ describe("DatabrokerDeals.sol", () => {
     await usdt.transfer(payoutWalletAddress, ethers.utils.parseUnits("800"));
 
     // Assert if payout is processed again
-    await expect(deals.payout(0)).to.be.revertedWith(
-      "DatabrokerDeals: Payout already processed"
-    );
+    await expect(deals.payout(0)).to.be.revertedWith("ID");
   });
 
   it("Should revert the payout if deal is locked or if buyer declines the payout", async () => {
     await createNewDeal();
 
     // Assert if payout reverts when deal is still locked
-    await expect(deals.payout(0)).to.be.revertedWith(
-      "DatabrokerDeals: Deal is locked for payout"
-    );
+    await expect(deals.payout(0)).to.be.revertedWith("ID");
 
     // buyer declines the payout
     await deals.declineDeal(0);
 
     // Assert if payout is processed again
-    await expect(deals.payout(0)).to.be.revertedWith(
-      "DatabrokerDeals: Deal was declined by buyer"
-    );
+    await expect(deals.payout(0)).to.be.revertedWith("ID");
   });
 
   /**
@@ -447,9 +442,7 @@ describe("DatabrokerDeals.sol", () => {
     await usdt.transfer(payoutWalletAddress, ethers.utils.parseUnits("800"));
 
     // Assert payout
-    await expect(deals.payout(0)).to.be.revertedWith(
-      "DatabrokerDeals: Insufficient DTX balance of contract"
-    );
+    await expect(deals.payout(0)).to.be.revertedWith("IDTX");
   });
 
   /**
@@ -462,9 +455,7 @@ describe("DatabrokerDeals.sol", () => {
     await deals.declineDeal(0);
 
     // Should revert if deal is declined again
-    await expect(deals.declineDeal(0)).to.be.revertedWith(
-      "DatabrokerDeals: Deal was already declined"
-    );
+    await expect(deals.declineDeal(0)).to.be.revertedWith("ID");
 
     await deals.acceptDeal(0);
 
@@ -478,9 +469,7 @@ describe("DatabrokerDeals.sol", () => {
       params: [1296000],
     });
 
-    await expect(deals.declineDeal(0)).to.be.revertedWith(
-      "DatabrokerDeals: Time duration for declining the deal is over"
-    );
+    await expect(deals.declineDeal(0)).to.be.revertedWith("ID");
   });
 
   /**
@@ -491,9 +480,7 @@ describe("DatabrokerDeals.sol", () => {
     await createNewDeal();
 
     // Should revert if deal is declined again
-    await expect(deals.acceptDeal(0)).to.be.revertedWith(
-      "DatabrokerDeals: Deal was already accepted"
-    );
+    await expect(deals.acceptDeal(0)).to.be.revertedWith("ID");
 
     await deals.declineDeal(0);
 
@@ -507,9 +494,7 @@ describe("DatabrokerDeals.sol", () => {
       params: [1296000],
     });
 
-    await expect(deals.acceptDeal(0)).to.be.revertedWith(
-      "DatabrokerDeals: Time duration for accepting the deal is over"
-    );
+    await expect(deals.acceptDeal(0)).to.be.revertedWith("ID");
   });
 
   it("should settle declined payout", async () => {
@@ -550,15 +535,11 @@ describe("DatabrokerDeals.sol", () => {
   it("should assert settleDeclinedDeal reverts", async () => {
     await createNewDeal();
 
-    await expect(deals.settleDeclinedDeal(0)).to.be.revertedWith(
-      "DatabrokerDeals: Deal is not declined by buyer"
-    );
+    await expect(deals.settleDeclinedDeal(0)).to.be.revertedWith("ID");
 
     await deals.declineDeal(0);
 
-    await expect(deals.settleDeclinedDeal(0)).to.be.revertedWith(
-      "DatabrokerDeals: Deal is locked for payout"
-    );
+    await expect(deals.settleDeclinedDeal(0)).to.be.revertedWith("ID");
 
     await deals.acceptDeal(0);
 
@@ -592,9 +573,7 @@ describe("DatabrokerDeals.sol", () => {
     await deals.burnDTX(ethers.utils.parseUnits("16000"));
     await usdt.transfer(payoutWalletAddress, ethers.utils.parseUnits("800"));
 
-    await expect(deals.settleDeclinedDeal(0)).to.be.revertedWith(
-      "DatabrokerDeals: Payout already processed"
-    );
+    await expect(deals.settleDeclinedDeal(0)).to.be.revertedWith("ID");
   });
 
   it("should revert if DTX balance is low when settleDeclinedDeal is called", async () => {
@@ -624,9 +603,7 @@ describe("DatabrokerDeals.sol", () => {
       params: [1296000],
     });
 
-    await expect(deals.settleDeclinedDeal(0)).to.be.revertedWith(
-      "DatabrokerDeals: Insufficient DTX balance of contract"
-    );
+    await expect(deals.settleDeclinedDeal(0)).to.be.revertedWith("IDTX");
   });
 
   it("asserts view only functions", async () => {
@@ -668,11 +645,10 @@ describe("DatabrokerDeals.sol", () => {
     await deals.updateUsdtInstance(
       "0x9e4e33eF13F67be8Fcfd94c61F0164123de2dF6F"
     );
-    await deals.updateUniswapDeadline("1500");
-    await deals.updateSlippagePercentage("30");
+    await deals.updateUniswapDetails("1500", "30");
 
-    expect((await deals.getUniswapDeadline()).toString()).to.be.equal("1500");
-    expect((await deals.getSlippagePercentage()).toString()).to.be.equal("30");
+    expect((await deals._uniswapDeadline()).toString()).to.be.equal("1500");
+    expect((await deals._slippagePercentage()).toString()).to.be.equal("30");
   });
 
   it("should withdrawAllUsdt and withdrawAllDtx from contract only when there are no active deals", async () => {
@@ -685,14 +661,7 @@ describe("DatabrokerDeals.sol", () => {
     });
 
     // Assert if withdrawAllUsdt when there are active deals
-    await expect(deals.withdrawAllUsdt()).to.be.revertedWith(
-      "DatabrokerDeals: Payout is still pending for some deals"
-    );
-
-    // Assert if withdrawAllDtx when there are active deals
-    await expect(deals.withdrawAllDtx()).to.be.revertedWith(
-      "DatabrokerDeals: Payout is still pending for some deals"
-    );
+    await expect(deals.withdrawAllTokens()).to.be.revertedWith("PP");
 
     // mock uniswap functions for `payout` and add swapped seller's commission in USDT
     // Amounts in for seller's commission
@@ -729,8 +698,7 @@ describe("DatabrokerDeals.sol", () => {
       await dtx.balanceOf(await owner.getAddress())
     ).toString();
 
-    await deals.withdrawAllUsdt();
-    await deals.withdrawAllDtx();
+    await deals.withdrawAllTokens();
 
     const ownerNewUsdtBalance = (
       await usdt.balanceOf(await owner.getAddress())
@@ -747,57 +715,31 @@ describe("DatabrokerDeals.sol", () => {
 
   it("should able to get the right deal Index", async () => {
     await createNewDeal();
-    const dealIndex = await deals.getLatestDealIndex();
+    const dealIndex = Number(await deals._dealIndex()) - 1;
 
     expect(dealIndex.toString()).to.be.equal("0");
-  });
-
-  it("Pausable tests", async () => {
-    await deals.pauseContract();
-    await expect(createNewDeal()).to.be.revertedWith("Pausable: paused");
-
-    await deals.unPauseContract();
-    await createNewDeal();
-
-    await deals.pauseContract();
-
-    await expect(deals.payout(0)).to.be.revertedWith("Pausable: paused");
-    await expect(deals.declineDeal(0)).to.be.revertedWith("Pausable: paused");
-    await expect(deals.acceptDeal(0)).to.be.revertedWith("Pausable: paused");
-    await expect(deals.settleDeclinedDeal(0)).to.be.revertedWith(
-      "Pausable: paused"
-    );
-  });
-
-  it("only admin should be able to pause and unpause the contract functions", async () => {
-    await expect(deals.connect(temp).pauseContract()).to.be.revertedWith(
-      "Caller is not an admin"
-    );
-
-    await deals.pauseContract();
-
-    await expect(deals.connect(temp).unPauseContract()).to.be.revertedWith(
-      "Caller is not an admin"
-    );
   });
 
   it("assert isDealIndexValid revert", async () => {
     await createNewDeal();
 
     await expect(
-      deals.calculateTransferAmount(100, [dtx.address, usdt.address])
-    ).to.be.revertedWith("DatabrokerDeals: Invalid deal index");
+      deals.calculateTransferAmount(
+        100,
+        ethers.utils.parseUnits("1000"),
+        ethers.utils.parseUnits("1000"),
+        10,
+        10,
+        [dtx.address, usdt.address]
+      )
+    ).to.be.revertedWith("II");
   });
 
   it("should assert functions with hasOwnerRole", async () => {
     await createNewDeal();
 
-    await expect(deals.connect(temp).withdrawAllUsdt()).to.be.revertedWith(
-      "Caller is not an owner"
-    );
-
-    await expect(deals.connect(temp).withdrawAllDtx()).to.be.revertedWith(
-      "Caller is not an owner"
+    await expect(deals.connect(temp).withdrawAllTokens()).to.be.revertedWith(
+      "OA"
     );
   });
 
@@ -815,74 +757,32 @@ describe("DatabrokerDeals.sol", () => {
         1296000, // 15 days
         platformAddress
       )
-    ).to.be.revertedWith("Caller is not an admin");
+    ).to.be.revertedWith("OA");
 
-    await expect(deals.connect(temp).payout(0)).to.be.revertedWith(
-      "Caller is not an admin"
-    );
+    await expect(deals.connect(temp).payout(0)).to.be.revertedWith("OA");
 
-    await expect(deals.connect(temp).declineDeal(0)).to.be.revertedWith(
-      "Caller is not an admin"
-    );
+    await expect(deals.connect(temp).declineDeal(0)).to.be.revertedWith("OA");
 
-    await expect(deals.connect(temp).acceptDeal(0)).to.be.revertedWith(
-      "Caller is not an admin"
-    );
+    await expect(deals.connect(temp).acceptDeal(0)).to.be.revertedWith("OA");
 
     await expect(deals.connect(temp).settleDeclinedDeal(0)).to.be.revertedWith(
-      "Caller is not an admin"
+      "OA"
     );
 
     await expect(
       deals
         .connect(temp)
         .updateDtxInstance("0x9e4e33eF13F67be8Fcfd94c61F0164123de2dF6F")
-    ).to.be.revertedWith("Caller is not an admin");
+    ).to.be.revertedWith("OA");
 
     await expect(
       deals
         .connect(temp)
         .updateUsdtInstance("0x9e4e33eF13F67be8Fcfd94c61F0164123de2dF6F")
-    ).to.be.revertedWith("Caller is not an admin");
+    ).to.be.revertedWith("OA");
 
     await expect(
-      deals.connect(temp).updateUniswapDeadline(100)
-    ).to.be.revertedWith("Caller is not an admin");
-
-    await expect(
-      deals.connect(temp).updateSlippagePercentage(30)
-    ).to.be.revertedWith("Caller is not an admin");
-  });
-
-  it("should revert if platform address is address(0) while creating a deal", async () => {
-    // Buyer pays the deal price in fiat
-    // Transak will convert fiat currency to USDT and deposit on DatabrokerDeals.sol address
-
-    // Mock the transfer deal amount of 1000 USDT to DatabrokerDeals.sol
-    await usdt.transfer(deals.address, ethers.utils.parseUnits("1000"));
-
-    // mock uniswap functions for `createDeal` and add swapped DTX fund
-    await mockUniswap.mock.swapExactTokensForTokens.returns([
-      ethers.utils.parseUnits("1000"),
-      ethers.utils.parseUnits("20000"),
-    ]);
-    await deals.burnUSDT(ethers.utils.parseUnits("1000"));
-    await dtx.transfer(deals.address, ethers.utils.parseUnits("20000"));
-
-    // Create a deal
-    await expect(
-      deals.createDeal(
-        "did:databroker:deal1:weatherdata",
-        await buyer.getAddress(),
-        await seller.getAddress(),
-        "0xf6a76b4e1400b4386a5a4eee9f4a6144bc982a9b84c70fd04cbf18aa80bcdb3e",
-        ethers.utils.parseUnits("1000"),
-        ethers.utils.parseUnits("20000"), // Min DTX from swap
-        20,
-        50,
-        1296000, // 15 days
-        "0x0000000000000000000000000000000000000000"
-      )
-    ).to.be.revertedWith("DatabrokerDeals: Invalid platformAddress");
+      deals.connect(temp).updateUniswapDetails(100, 30)
+    ).to.be.revertedWith("OA");
   });
 });
